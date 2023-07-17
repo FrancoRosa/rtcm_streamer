@@ -51,7 +51,7 @@ setInterval(() => {
 }, 1000);
 
 tcpServer.listen(receiver.port, "0.0.0.0", (sock) => {
-  console.log("... server listening on", server.port);
+  console.log("... server listening on", receiver.port);
 });
 
 tcpServer.on("connection", (socket) => {
@@ -65,6 +65,7 @@ tcpServer.on("connection", (socket) => {
   });
 });
 
-tcpServer.on("error", (socket) => {
-  console.error(timestamp(), data.toString());
+tcpServer.on("error", (err) => {
+  console.log(err);
+  console.error(timestamp(), err.toString());
 });
