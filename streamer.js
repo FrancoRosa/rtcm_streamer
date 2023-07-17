@@ -1,18 +1,17 @@
-const { receiver } = require("./settings");
+const { receiver, server } = require("./settings");
 const express = require("express");
 const socket = require("socket.io");
 
 const net = require("net");
 const tcpServer = net.createServer();
 
-const PORT = 5000;
 const app = express();
 
-const server = app.listen(PORT, () => {
-  console.log(`...listening on ${PORT}`);
+const eXserver = app.listen(server.port, () => {
+  console.log(`... listening on ${server.port}`);
 });
 
-const io = socket(server);
+const io = socket(eXserver);
 let error_count = 0;
 const error_limit = 3;
 let clients_count = 0;
@@ -53,17 +52,17 @@ setInterval(() => {
 }, 1000);
 
 tcpServer.listen(receiver.port, "0.0.0.0", (sock) => {
-  console.log("server listening on 5001");
+  console.log("... server listening on", server.port);
 });
 
 tcpServer.on("connection", (socket) => {
-  console.log("new client arrived");
+  console.log("... new client arrived");
   socket.on("data", (res) => {
     console.log(res);
     error_count = 0;
-    io.sockets.emit("rtcm", data);
+    io.sockets.emit("rtcm", res);
     fresh_data = true;
-    payload = data;
+    payload = res;
   });
 });
 
