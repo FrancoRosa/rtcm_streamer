@@ -8,7 +8,7 @@ const tcpServer = net.createServer();
 const app = express();
 
 const eXserver = app.listen(server.port, () => {
-  console.log(`... listening on ${server.port}`);
+  console.log(`... socketio listening on ${server.port}`);
 });
 
 const io = socket(eXserver);
@@ -51,7 +51,7 @@ setInterval(() => {
 }, 1000);
 
 tcpServer.listen(receiver.port, "0.0.0.0", (sock) => {
-  console.log("... server listening on", receiver.port);
+  console.log("... tcp server listening on", receiver.port);
 });
 
 tcpServer.on("connection", (socket) => {

@@ -8,6 +8,7 @@ const server = net.createConnection({
 
 station.on("connect", () => {
   console.log("... conected to base: ", base);
+
   station.on("data", (data) => {
     console.log(data.toString("utf8"));
     try {
@@ -16,10 +17,15 @@ station.on("connect", () => {
       console.log("server error!!");
     }
   });
-});
 
-station.on("disconect", () => {
-  console.log(".. disconected");
+  station.on("disconnect", () => {
+    console.log(".. disconnected");
+  });
+
+  station.on("error", () => {
+    console.log(".. station error");
+    console.log("error");
+  });
 });
 
 server.on("connect", () => {
@@ -27,5 +33,8 @@ server.on("connect", () => {
 
   server.on("data", (data) => {
     console.log(data.toString("utf8"));
+  });
+  server.on("error", (error) => {
+    console.log(error.toString("utf8"));
   });
 });
