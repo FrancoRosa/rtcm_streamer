@@ -36,7 +36,6 @@ const timestamp = () => {
 setInterval(() => {
   if (error_count > error_limit) {
     console.error(timestamp(), "... restarting service");
-    exec("pm2 restart ntrip");
   }
   error_count += 1;
 }, 5000);
