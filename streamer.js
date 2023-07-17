@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
 
 const timestamp = () => {
   z = new Date();
-  return z.toLocaleString();
+  return z.toLocaleString("sv");
 };
 
 setInterval(() => {
