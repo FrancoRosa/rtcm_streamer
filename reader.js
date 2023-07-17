@@ -1,14 +1,14 @@
 const net = require("net");
-const { base, base, receiver } = require("./settings");
-const base = net.createConnection({ port: base.port, host: base.ip });
+const { base, receiver } = require("./settings");
+const station = net.createConnection({ port: base.port, host: base.ip });
 const server = net.createConnection({
   port: receiver.port,
   host: receiver.host,
 });
 
-base.on("connect", () => {
+station.on("connect", () => {
   console.log("... conected to base: ", base);
-  base.on("data", (data) => {
+  station.on("data", (data) => {
     console.log(data.toString("utf8"));
     try {
       server.write(data);
@@ -18,12 +18,12 @@ base.on("connect", () => {
   });
 });
 
-base.on("disconect", () => {
+station.on("disconect", () => {
   console.log(".. disconected");
 });
 
 server.on("connect", () => {
-  console.log("... connected to receiver: ", base);
+  console.log("... connected to receiver: ", receiver);
 
   server.on("data", (data) => {
     console.log(data.toString("utf8"));
