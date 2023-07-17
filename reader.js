@@ -1,40 +1,48 @@
 const net = require("net");
-const { base, receiver } = require("./settings");
-const station = net.createConnection({ port: base.port, host: base.ip });
-const server = net.createConnection({
-  port: receiver.port,
-  host: receiver.host,
-});
+const { station, receiver } = require("./settings");
 
-station.on("connect", () => {
-  console.log("... conected to base: ", base);
+const station_socket = new net.Socket();
+const receiver_socket = new net.Socket();
 
-  station.on("data", (data) => {
-    console.log(data.toString("utf8"));
+////////////////// Station /////////////////////////
+console.log("... Connecting to station", station);
+station_socket.connect(station.port, station.ip, () => {
+  console.log("... Connected to station", station);
+
+  station_socket.on("data", (data) => {
     try {
-      server.write(data);
+      console.log("... data from station:", data.toString());
+      receiver_socket.write(data);
     } catch (error) {
-      console.log("server error!!");
+      console.log("... error trying to upload to server");
     }
   });
-
-  station.on("disconnect", () => {
-    console.log(".. disconnected");
-  });
-
-  station.on("error", () => {
-    console.log(".. station error");
-    console.log("error");
-  });
 });
 
-server.on("connect", () => {
-  console.log("... connected to receiver: ", receiver);
+// Handle errors
+station_socket.on("error", (error) => {
+  console.error("... Station error:", error);
+});
 
-  server.on("data", (data) => {
-    console.log(data.toString("utf8"));
-  });
-  server.on("error", (error) => {
-    console.log(error.toString("utf8"));
-  });
+// Handle connection close
+station_socket.on("close", () => {
+  console.log("... Station connection closed");
+  console.log("######## restart app");
+});
+
+////////////////// Receiver /////////////////////////
+
+console.log("... Connecting to receiver", receiver);
+receiver_socket.connect(receiver.port, receiver.ip, () => {
+  console.log("... Connected to receiver", receiver);
+});
+// Handle errors
+receiver_socket.on("error", (error) => {
+  console.error("... receiver error:", error);
+});
+
+// Handle connection close
+receiver_socket.on("close", () => {
+  console.log("... receiver connection closed");
+  console.log("######## restart app");
 });

@@ -11,8 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "heartbeatjs": "^1.0.8",
-    "socket.io": "^4.7.1",
-    "tcp-ip-connman": "^1.0.6"
+    "socket.io": "^4.7.1"
   }
 }
