@@ -34,17 +34,6 @@ const timestamp = () => {
   return z.toLocaleString();
 };
 
-rtcm.stdout.on("data", (data) => {
-  error_count = 0;
-  io.sockets.emit("rtcm", data);
-  fresh_data = true;
-  payload = data;
-});
-
-rtcm.stderr.on("data", (data) => {
-  console.error(timestamp(), data.toString());
-});
-
 setInterval(() => {
   if (error_count > error_limit) {
     console.error(timestamp(), "... restarting service");
