@@ -57,7 +57,7 @@ tcpServer.listen(receiver.port, "0.0.0.0", (sock) => {
 tcpServer.on("connection", (socket) => {
   console.log("... new client arrived");
   socket.on("data", (res) => {
-    console.log(res);
+    console.log(timestamp(), res.length);
     error_count = 0;
     io.sockets.emit("rtcm", res);
     fresh_data = true;

@@ -11,7 +11,7 @@ const server = {
   port: 5002,
 };
 
-const restart = "sudo pm2 restart station_reader";
+const restart = "pm2 restart station_reader";
 
 exports.station = station;
 exports.receiver = receiver;
